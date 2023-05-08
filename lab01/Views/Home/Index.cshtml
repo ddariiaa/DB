@@ -1,0 +1,91 @@
+﻿@model lab01.Models.IndexViewModel
+@{
+    ViewData["Title"] = "Lab 1";
+}
+
+<h1>TMHandbook</h1>
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th scope="col">KODTM</th>
+            <th scope="col">NAMETM</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Trademarks)
+        {
+            <tr>
+                <td scope="row">@item.KODTM</td>
+                <td>@item.NAMETM</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h1>ProductHandbook</h1>
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th scope="col">KODP</th>
+            <th scope="col">NAMEP</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Products)
+        {
+            <tr>
+                <td scope="row">@item.KODP</td>
+                <td>@item.NAMEP</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h1>PriceList</h1>
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th scope="col">KODPR</th>
+            <th scope="col">KODTM</th>
+            <th scope="col">KODP</th>
+            <th scope="col">CINA</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.PricelistPositions)
+        {
+            <tr>
+                <td scope="row">@item.KODPR</td>
+                <td>@item.KODTM</td>
+                <td>@item.KODP</td>
+                <td>@item.CINA</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h1>Realisation</h1>
+<table class="table table-striped table-hover" style="margin-bottom: 5em">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">KODPR</th>
+            <th scope="col">KIL</th>
+            <th scope="col">DATAR</th>
+            <th scope="col">DATAS</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Realizations)
+        {
+            <tr>
+                <td scope="row">@item.ID</td>
+                <td>@item.KODPR</td>
+                <td>@item.KIL</td>
+                <td>@item.DATAR</td>
+                <td>@item.DATAS</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

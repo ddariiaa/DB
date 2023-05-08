@@ -1,0 +1,74 @@
+﻿@model lab02.Models.UpdateViewModel
+@{
+    ViewData["Title"] = "UPDATE";
+}
+
+<div class="text-center">
+    @if (Model.Trademarks is not null && Model.PricelistPositions is null)
+    {
+        <h1>TMHandbook</h1>
+        <form method="post">
+            <div class="mb-3">
+                <label class="form-label">Trademark</label>
+                <select class="form-select" title="Trademark" aria-label="Trademark" required asp-for="TrademarkId">
+                    @foreach (var trademark in Model.Trademarks)
+                    {
+                        <option value="@trademark.KODTM">@trademark.NAMETM</option>
+                    }
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    }
+    else if (Model.Products is not null && Model.PricelistPositions is null)
+    {
+        <h1>ProductHandbook</h1>
+        <form method="post">
+            <div class="mb-3">
+                <label class="form-label">Product</label>
+                <select class="form-select" title="Product" aria-label="Product" required asp-for="ProductId">
+                    @foreach (var product in Model.Products)
+                    {
+                        <option value="@product.KODP">@product.NAMEP</option>
+                    }
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+
+    }
+    else if (Model.PricelistPositions is not null)
+    {
+        <h1>PriceList</h1>
+        <form method="post">
+            <div class="mb-3">
+                <label class="form-label">Pricelist</label>
+                <select class="form-select" title="Pricelist" aria-label="Pricelist" required asp-for="PricelistPositionId">
+                    @foreach (var position in Model.PricelistPositions)
+                    {
+                        string tm = Model.Trademarks.First(t => t.KODTM == position.KODTM).NAMETM;
+                        string product = Model.Products.First(p => p.KODP == position.KODP).NAMEP;
+                        <option value="@position.KODPR">@position.KODPR "@tm" @product</option>
+                    }
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    }
+    else if (Model.Realizations is not null)
+    {
+        <h1>Realisation</h1>
+        <form method="post">
+            <div class="mb-3">
+                <label class="form-label">Realization</label>
+                <select class="form-select" title="Realization" aria-label="Realization" required asp-for="RealizationId">
+                    @foreach (var realization in Model.Realizations)
+                    {
+                        <option value="@realization.ID">@string.Join(" | ", realization.ID, realization.KODPR, realization.KIL, realization.DATAR.ToShortDateString(), realization.DATAS?.ToShortDateString())</option>
+                    }
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    }
+</div>

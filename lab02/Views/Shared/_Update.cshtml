@@ -1,0 +1,128 @@
+﻿@model lab02.Models.UpdatePartialViewModel
+@{
+    ViewData["Title"] = "UPDATE";
+}
+
+<div class="text-center">
+    @if (Model.Trademark is not null)
+    {
+        <form method="post" action="/trademarks/updateconcrete/@Model.Trademark.KODTM">
+            <h1>Update trademark</h1>
+            <div class="mb-3">
+                <label asp-for="Trademark.KODTM" class="form-label">KODTM</label>
+                <input readonly type="number" class="form-control" value="@Model.Trademark.KODTM">
+            </div>
+            <div class="mb-3">
+                <label asp-for="Trademark.NAMETM" class="form-label">NAMETM</label>
+                <input required type="text" class="form-control" asp-for="Trademark.NAMETM" value="@Model.Trademark.NAMETM">
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    }
+    else if (Model.Product is not null)
+    {
+        <form method="post" action="/products/updateconcrete/@Model.Product.KODP">
+            <h1>Update product</h1>
+            <div class="mb-3">
+                <label asp-for="Product.KODP" class="form-label">KODP</label>
+                <input readonly type="number" class="form-control" value="@Model.Product.KODP">
+            </div>
+            <div class="mb-3">
+                <label asp-for="Product.NAMEP" class="form-label">NAMEP</label>
+                <input required type="text" class="form-control" asp-for="Product.NAMEP" value="@Model.Product.NAMEP">
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    }
+    else if (Model.PricelistPosition is not null)
+    {
+        <form method="post" action="/pricelist/updateconcrete/@Model.PricelistPosition.KODPR">
+            <h1>Update pricelist position</h1>
+            <div class="mb-3">
+                <label asp-for="PricelistPosition.KODPR" class="form-label">KODPR</label>
+                <input readonly type="number" class="form-control" value="@Model.PricelistPosition.KODPR">
+            </div>
+            <div class="mb-3">
+                <label asp-for="PricelistPosition.KODTM" class="form-label">Trademark</label>
+                <select class="form-select" title="Trademark" aria-label="Trademark" asp-for="PricelistPosition.KODTM" required>
+                    @foreach (var trademark in Model.Trademarks)
+                    {
+                        bool selected = Model.PricelistPosition.KODTM == trademark.KODTM;
+                        if (selected)
+                        {
+                            <option selected value="@trademark.KODTM">@trademark.NAMETM</option>
+                        }
+                        else
+                        {
+                            <option value="@trademark.KODTM">@trademark.NAMETM</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="mb-3">
+                <label asp-for="PricelistPosition.KODP" class="form-label">Product</label>
+                <select class="form-select" title="Product" aria-label="Product" asp-for="PricelistPosition.KODP" required>
+                    @foreach (var product in Model.Products)
+                    {
+                        bool selected = Model.PricelistPosition.KODP == product.KODP;
+                        if (selected)
+                        {
+                            <option selected value="@product.KODP">@product.NAMEP</option>
+                        }
+                        else
+                        {
+                            <option value="@product.KODP">@product.NAMEP</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="mb-3">
+                <label asp-for="PricelistPosition.CINA" class="form-label">CINA</label>
+                <input required type="number" step="any" min="0.01" class="form-control" asp-for="PricelistPosition.CINA" value="@Convert.ToString(Model.PricelistPosition.CINA, System.Globalization.CultureInfo.InvariantCulture)">
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    }
+    else if (Model.Realization is not null)
+    {
+        <form method="post" action="/realization/updateconcrete/@Model.Realization.ID">
+            <h1>Update realization item</h1>
+            <div class="mb-3">
+                <label asp-for="Realization.ID" class="form-label">ID</label>
+                <input readonly type="number" class="form-control" value="@Model.Realization.ID">
+            </div>
+            <div class="mb-3">
+                <label asp-for="Realization.KODPR" class="form-label">Pricelist</label>
+                <select class="form-select" aria-label="Product" asp-for="Realization.KODPR" required>
+                    @foreach (var position in Model.Pricelist)
+                    {
+                        bool selected = Model.Realization.KODPR == position.KODPR;
+                        string tm = Model.Trademarks.First(t => t.KODTM == position.KODTM).NAMETM;
+                        string product = Model.Products.First(p => p.KODP == position.KODP).NAMEP;
+                        if (selected)
+                        {
+                            <option selected value="@position.KODPR">@position.KODPR "@tm" @product</option>
+                        }
+                        else
+                        {
+                            <option value="@position.KODPR">"@tm" @product</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Realization.KIL" class="form-label">KIL</label>
+                <input required type="number" min="1" class="form-control" asp-for="Realization.KIL" value="@Model.Realization.KIL">
+            </div>
+            <div class="mb-3">
+                <label asp-for="Realization.DATAR" class="form-label">DATAR</label>
+                <input required type="date" class="form-control" asp-for="Realization.DATAR" value="@Model.Realization.DATAR.ToString("yyyy-MM-dd")">
+            </div>
+            <div class="mb-3">
+                <label asp-for="Realization.DATAS" class="form-label">DATAS</label>
+                <input type="date" class="form-control" asp-for="Realization.DATAS" value="@Model.Realization.DATAS?.ToString("yyyy-MM-dd")">
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    }
+</div>

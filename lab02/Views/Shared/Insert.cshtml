@@ -1,0 +1,93 @@
+﻿@model lab02.Models.InsertViewModel
+@{
+    ViewData["Title"] = "INSERT";
+}
+
+<form method="post">
+    @if (Model.Trademark is not null)
+    {
+        <h1>TMHandbook</h1>
+        @*<div class="mb-3">
+                <label asp-for="Trademark.KODTM" class="form-label">KODTM</label>
+                <input type="number" class="form-control" asp-for="Trademark.KODTM">
+            </div>*@
+        <div class="mb-3">
+            <label asp-for="Trademark.NAMETM" class="form-label">NAMETM</label>
+            <input required type="text" class="form-control" asp-for="Trademark.NAMETM">
+        </div>
+    }
+    else if (Model.Product is not null)
+    {
+        <h1>ProductHandbook</h1>
+        @*<div class="mb-3">
+                <label asp-for="Product.KODP" class="form-label">KODP</label>
+                <input type="number" class="form-control" asp-for="Product.KODP">
+            </div>*@
+        <div class="mb-3">
+            <label asp-for="Product.NAMEP" class="form-label">NAMEP</label>
+            <input required type="text" class="form-control" asp-for="Product.NAMEP">
+        </div>
+    }
+    else if (Model.PricelistPosition is not null)
+    {
+        <h1>PriceList</h1>
+        <div class="mb-3">
+            <label asp-for="PricelistPosition.KODPR" class="form-label">KODPR</label>
+            <input required type="number" class="form-control" asp-for="PricelistPosition.KODPR">
+            @if (TempData["KODPR"] != null)
+            {
+                <span style="color:red">@TempData["KODPR"]</span>
+            }
+        </div>
+        <div class="mb-3">
+            <label asp-for="PricelistPosition.KODTM" class="form-label">Trademark</label>
+            <select class="form-select" title="Trademark" aria-label="Trademark" asp-for="PricelistPosition.KODTM" required>
+                @foreach (var trademark in Model.Trademarks)
+                {
+                    <option value="@trademark.KODTM">@trademark.NAMETM</option>
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <label asp-for="PricelistPosition.KODP" class="form-label">Product</label>
+            <select class="form-select" title="Product" aria-label="Product" asp-for="PricelistPosition.KODP" required>
+                @foreach (var product in Model.Products)
+                {
+                    <option value="@product.KODP">@product.NAMEP</option>
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <label asp-for="PricelistPosition.CINA" class="form-label">CINA</label>
+            <input required type="number" step="any" min="0.01" class="form-control" asp-for="PricelistPosition.CINA">
+        </div>
+    }
+    else if (Model.Realization is not null)
+    {
+        <h1>Realisation</h1>
+        <div class="mb-3">
+            <label asp-for="Realization.KODPR" class="form-label">Pricelist</label>
+            <select class="form-select" aria-label="Product" asp-for="Realization.KODPR" required>
+                @foreach (var position in Model.Pricelist)
+                {
+                    string tm = Model.Trademarks.First(t => t.KODTM == position.KODTM).NAMETM;
+                    string product = Model.Products.First(p => p.KODP == position.KODP).NAMEP;
+                    <option value="@position.KODPR">"@tm" @product</option>
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Realization.KIL" class="form-label">KIL</label>
+            <input required type="number" min="1" class="form-control" asp-for="Realization.KIL">
+        </div>
+        <div class="mb-3">
+            <label asp-for="Realization.DATAR" class="form-label">DATAR</label>
+            <input required type="date" class="form-control" asp-for="Realization.DATAR" value="@DateTime.Now.Date">
+        </div>
+        <div class="mb-3">
+            <label asp-for="Realization.DATAS" class="form-label">DATAS</label>
+            <input type="date" class="form-control" asp-for="Realization.DATAS">
+        </div>
+    }
+    <button type="submit" class="btn btn-primary">Insert</button>
+</form>
